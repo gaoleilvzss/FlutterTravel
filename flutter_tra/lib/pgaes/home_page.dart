@@ -8,6 +8,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: ListView(
+                children: <Widget>[],
+              ))
+        ],
+      ),
+    );
   }
 }

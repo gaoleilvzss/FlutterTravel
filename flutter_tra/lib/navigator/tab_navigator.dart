@@ -3,7 +3,8 @@ import 'package:flutter_tra/pgaes/home_page.dart';
 import 'package:flutter_tra/pgaes/my_page.dart';
 import 'package:flutter_tra/pgaes/search_page.dart';
 import 'package:flutter_tra/pgaes/travel_page.dart';
-
+import 'dart:io';
+import 'package:flutter/services.dart';
 class TabNavigator extends StatefulWidget {
   @override
   _TabNavigatorState createState() => _TabNavigatorState();
@@ -18,6 +19,11 @@ final _activeColor = Colors.blue;
 class _TabNavigatorState extends State<TabNavigator> {
   @override
   Widget build(BuildContext context) {
+    if (Platform.isAndroid) {
+      SystemUiOverlayStyle systemUiOverlayStyle =
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    }
     return Scaffold(
       body: PageView.builder(
         itemCount: pageList.length,
