@@ -7,6 +7,9 @@ import 'package:flutter_tra/model/common_model.dart';
 import 'package:flutter_tra/model/home_model.dart';
 import 'package:flutter_tra/widget/local_nav.dart';
 
+import '../model/grid_nav_model.dart';
+import '../widget/grid_nav.dart';
+
 const MAX_APPBAR_ALPHA = 100;
 
 class HomePage extends StatefulWidget {
@@ -18,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   String resultString = "";
   List<CommonModel> localNavList = [];
   List<CommonModel> bannerList = [];
+  GridNavModel gridNavModel;
   double appBarAlpha = 0;
   @override
   void initState() {
@@ -71,6 +75,11 @@ class _HomePageState extends State<HomePage> {
                         localNavList: localNavList,
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(7, 0, 7, 4),
+                      child:GridNav(gridNavModel: gridNavModel,),
+                    ),
+
                     Container(
                       height: 800,
                       child: Text('hhh'),
@@ -107,6 +116,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         localNavList = model.localNavList;
         bannerList = model.bannerList;
+        gridNavModel = model.gridNav;
       });
     } catch (E) {
       print(E);
