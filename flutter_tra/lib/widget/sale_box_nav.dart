@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tra/model/common_model.dart';
 import 'package:flutter_tra/model/grid_nav_model.dart';
+import 'package:flutter_tra/model/sale_box_model.dart';
 import 'package:flutter_tra/widget/webview.dart';
 
 class SaleBox extends StatelessWidget {
-  final List<CommonModel> saleBox;
+  final SaleBoxModel saleBox;
 
   SaleBox({Key key, this.saleBox}) : super(key: key);
 
@@ -21,22 +22,61 @@ class SaleBox extends StatelessWidget {
   _items(BuildContext context) {
     if (saleBox == null) return null;
     List<Widget> items = [];
-//    items.add(item)
-
-    int sep = (saleBox.length / 2 + 0.5).toInt();
+    items.add(
+        _doubleItem(context, saleBox.bigCard1, saleBox.bigCard2, true, false));
+    items.add(_doubleItem(
+        context, saleBox.smallCard1, saleBox.smallCard2, false, false));
+    items.add(_doubleItem(
+        context, saleBox.smallCard3, saleBox.smallCard4, false, true));
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, //平均排列
-          children: items.sublist(0, sep),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 10),
+        Container(
+          height: 44,
+          margin: EdgeInsets.only(left: 10),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(width: 1, color: Color(0xfff2f2f2)))),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, //平均排列
-            children: items.sublist(sep, subNavList.length),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Image.network(
+                saleBox.icon,
+                height: 15,
+                fit: BoxFit.fill,
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 1, 8, 1),
+                margin: EdgeInsets.only(right: 7),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                        colors: [Color(0xffff4e63), Color(0xff6cc9)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight)),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => WebView(url: saleBox.moreUrl,title: '更多活动',)
+                    ));
+                  },
+                  child: Text('获取更多福利 >',style: TextStyle(color: Colors.white,fontSize: 12),),
+                ),
+              )
+            ],
           ),
-        )
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items.sublist(0,1),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items.sublist(1,2),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: items.sublist(2,3),
+        ),
       ],
     );
 //    return Row(
@@ -45,10 +85,20 @@ class SaleBox extends StatelessWidget {
 //    );
   }
 
-  Widget _item(BuildContext context, CommonModel model) {
-    return Expanded(
-      flex: 1,
-      child: GestureDetector(
+  Widget _doubleItem(BuildContext context, CommonModel leftCard,
+      CommonModel rightCard, bool big, bool last) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        _item(context, leftCard, true, last,big),
+        _item(context, rightCard, false, last,big),
+      ],
+    );
+  }
+
+  Widget _item(BuildContext context, CommonModel model, bool left, bool last, bool big) {
+    BorderSide borderSide = BorderSide(width: 0.8,color: Color(0xfff2f2f2));
+    return  GestureDetector(
         onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) {
@@ -59,23 +109,18 @@ class SaleBox extends StatelessWidget {
             );
           }));
         },
-        child: Column(
-          children: <Widget>[
-            Image.network(
-              model.icon,
-              width: 18,
-              height: 18,
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 3),
-              child: Text(
-                model.title,
-                style: TextStyle(fontSize: 12),
-              ),
-            )
-          ],
-        ),
-      ),
+        child:  Container(
+          decoration: BoxDecoration(
+            border: Border(right: left?borderSide:BorderSide.none,bottom: last?BorderSide.none:borderSide),
+
+          ),
+          child: Image.network(
+            model.icon,
+            fit: BoxFit.fill,
+            width: MediaQuery.of(context).size.width/2-10,
+            height: big?129:80,
+          ),
+        )
     );
   }
 }

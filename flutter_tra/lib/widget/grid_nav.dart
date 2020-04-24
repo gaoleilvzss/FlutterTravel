@@ -24,7 +24,7 @@ class GridNav extends StatelessWidget {
 
   _gridNavItems(BuildContext context) {
     List<Widget> items = [];
-    if (gridNavModel == null) items;
+    if (gridNavModel == null) return items;
     if (gridNavModel.hotel != null) {
       items.add(_gridNavItem(context, gridNavModel.hotel, true));
     }
